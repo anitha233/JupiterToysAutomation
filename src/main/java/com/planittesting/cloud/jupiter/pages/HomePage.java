@@ -7,35 +7,42 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
- * 
- * Represents the home page of Jupiter Toys.
- * Contains navigation methods to Contact and Shop sections.
- * Uses @FindBy to locate menu links.
- * 
+ *
+ * Represents the Home Page
+ *
+ * @author anithavalluru
+ *
  */
 
-public class HomePage {
-	
-	WebDriver driver;
-	
-	
-	@FindBy(linkText = "Contact")
-	WebElement contactLink;
-	
-	@FindBy(linkText = "Shop")
-	WebElement shopLink;
-	
-	public HomePage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
-	
-	public void navigateToContactPage() {
-		contactLink.click();
-	}
-	
-	public void navigateToShopPage() {
-		shopLink.click();
-	}
+public class HomePage extends BasePage{
+
+    @FindBy(linkText = "Contact")
+    WebElement contactLink;
+
+    @FindBy(linkText = "Shop")
+    WebElement shopLink;
+
+    @FindBy(linkText = "Cart")
+    WebElement cartLink;
+
+    public HomePage(WebDriver driver) {
+        super(driver);
+    }
+
+    public ContactPage goToContactPage() {
+        contactLink.click();
+        return new ContactPage(driver);
+    }
+
+    public ShopPage goToShopPage() {
+        shopLink.click();
+        return new ShopPage(driver);
+    }
+
+    public CartPage goToCartPage() {
+        cartLink.click();
+        return new CartPage(driver);
+    }
+
 
 }
