@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Jupiter UI Suite" parallel="false">
+   
+  <listeners>
+	  <listener class-name="com.planittesting.cloud.jupiter.utils.Listeners"></listener>
+  </listeners> 
+    <test name="Contact Cart Tests">
+		  <classes>
+            <class name="com.planittesting.cloud.jupiter.tests.ContactTests"/>
+            <class name="com.planittesting.cloud.jupiter.tests.CartTests"/>
+        </classes>
+    </test>
+</suite>
