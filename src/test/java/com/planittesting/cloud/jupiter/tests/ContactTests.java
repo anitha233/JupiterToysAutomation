@@ -62,6 +62,7 @@ public class ContactTests extends BaseTest{
 	            ContactPage contact = home.goToContactPage();
 
 	            contact.fillMandatoryFields("Mike", "mike@test.com", "Good day");
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Submit")));
 	            contact.clickSubmit();
                
 	            Assert.assertTrue(contact.isSuccessMessageDisplayed(), "Success message should appear");
