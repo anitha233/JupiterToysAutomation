@@ -7,16 +7,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 /**
- *
- * Represents the Home Page
- *
+ * 
+ * Represents the Home Page 
+ * 
  * @author anithavalluru
- *
+ * 
  */
 
 public class HomePage extends BasePage{
-
-    @FindBy(linkText = "Contact")
+	
+	@FindBy(linkText = "Contact")
     WebElement contactLink;
 
     @FindBy(linkText = "Shop")

@@ -7,17 +7,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+
 /**
- *
+ * 
  * Represents the Contact Page form
- *
+ * 
  * @author anithavalluru
- *
+ * 
  */
 
 public class ContactPage extends BasePage{
-
-    @FindBy(id = "forename") WebElement forename;
+	
+	@FindBy(id = "forename") WebElement forename;
     @FindBy(id = "email") WebElement email;
     @FindBy(id = "message") WebElement message;
     @FindBy(linkText = "Submit") WebElement submitButton;
@@ -29,10 +30,10 @@ public class ContactPage extends BasePage{
         super(driver);
     }
 
-    public void clickSubmit() {
-
-        submitButton.click();
-    }
+    public void clickSubmit() { 
+    
+    	submitButton.click();
+    	}
 
     public void fillMandatoryFields(String name, String mail, String msg) {
         forename.sendKeys(name);
