@@ -27,30 +27,31 @@ public class Listeners extends BaseTest implements ITestListener{
 		test.log(Status.PASS, "Test Passed");
 		
 	}
-	
-	@Override
-	public void onTestFailure(ITestResult result) {
+
+    public void onTestFailure(ITestResult result) {
+        Object testInstance = result.getInstance();
         WebDriver driver = null;
-		test.fail(result.getThrowable());
 
-//		try {
-//			driver = (WebDriver) result.getTestClass().getRealClass().getField("driver")
-//					.get(result.getInstance());
-//		}catch(Exception e1) {
-//			e1.printStackTrace();
-//		}
-		String filePath = null;
-		try {
-			filePath = getScreenshot(result.getMethod().getMethodName(), driver);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		test.addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
+        try {
+            driver = (WebDriver) result.getTestClass().getRealClass().getField("driver").get(testInstance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+        if (driver != null) {
+            try {
+                String screenshotPath = new BaseTest().getScreenshot(result.getName(), driver);
+                System.out.println("Screenshot saved: " + screenshotPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("WebDriver is null, skipping screenshot capture.");
+        }
+    }
 
-	@Override
+
+    @Override
 	public void onTestSkipped(ITestResult result) {
 		
 	}
