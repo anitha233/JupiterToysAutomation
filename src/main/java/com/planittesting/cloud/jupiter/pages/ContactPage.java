@@ -24,7 +24,7 @@ public class ContactPage extends BasePage{
     @FindBy(linkText = "Submit") WebElement submitButton;
 
     @FindBy(css = ".help-inline")List<WebElement> errorMessages;
-    @FindBy(css = ".alert-success") WebElement successAlert;
+    @FindBy(css = ".alert") WebElement successAlert;
 
     public ContactPage(WebDriver driver) {
         super(driver);

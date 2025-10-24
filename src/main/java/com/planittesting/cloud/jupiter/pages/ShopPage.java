@@ -13,14 +13,7 @@ import java.util.List;
 
 public class ShopPage extends BasePage {
 
-   /* @FindBy(css = "h4.product-title")
-    List<WebElement> productNames;
 
-   @FindBy(css = "span.product-price")
-   List<WebElement> productPrices;
-
-    @FindBy(xpath = "//a[text()='Buy']")
-   List<WebElement> buyButtons;*/
 
     @FindBy(css = ".product")
     List<WebElement> products;
@@ -46,11 +39,6 @@ public double getProductPrice(String productName) {
             String priceText = product.findElement(By.cssSelector("span.product-price")).getText().replace("$", "").trim();
             return Double.parseDouble(priceText);
         }
-    }
-    //print all product names
-    System.out.println("Available products on Shop Page:");
-    for (WebElement product : products) {
-        System.out.println(" - " + product.findElement(By.cssSelector("h4.product-title")).getText());
     }
     throw new RuntimeException("Product not found: " + productName);
 }

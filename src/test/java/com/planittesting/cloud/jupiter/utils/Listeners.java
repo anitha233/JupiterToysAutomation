@@ -47,12 +47,8 @@ public class Listeners extends BaseTest implements ITestListener{
 			e.printStackTrace();
 		}
 		test.addScreenCaptureFromPath(filePath, result.getMethod().getMethodName());
-		
-	}
-	
-	
 
-	
+	}
 
 	@Override
 	public void onTestSkipped(ITestResult result) {
@@ -66,9 +62,6 @@ public class Listeners extends BaseTest implements ITestListener{
 	
 	@Override
 	public void onStart(ITestContext context) {
-		
-		
-		
 	}
 	
 	@Override

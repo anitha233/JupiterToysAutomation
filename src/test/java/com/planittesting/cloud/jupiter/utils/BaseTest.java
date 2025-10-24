@@ -24,8 +24,8 @@ import org.testng.annotations.BeforeMethod;
  */
 public class BaseTest {
 	
-	protected WebDriver driver;
-	protected WebDriverWait wait;
+	public WebDriver driver;
+	public WebDriverWait wait;
 	String baseUrl = "http://jupiter.cloud.planittesting.com";
 	
 	
