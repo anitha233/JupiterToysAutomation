@@ -30,14 +30,15 @@ public class Listeners extends BaseTest implements ITestListener{
 	
 	@Override
 	public void onTestFailure(ITestResult result) {
+        WebDriver driver = null;
 		test.fail(result.getThrowable());
-		
-		/*try {
+
+		try {
 			driver = (WebDriver) result.getTestClass().getRealClass().getField("driver")
 					.get(result.getInstance());
 		}catch(Exception e1) {
 			e1.printStackTrace();
-		}*/
+		}
 		String filePath = null;
 		try {
 			filePath = getScreenshot(result.getMethod().getMethodName(), driver);

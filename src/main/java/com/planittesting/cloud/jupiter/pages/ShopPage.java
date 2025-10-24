@@ -5,7 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+
+
+import java.util.List;
 
 /**
  * 
@@ -15,50 +17,61 @@ import org.openqa.selenium.support.PageFactory;
  * 
  */
 
-public class ShopPage extends BasePage{
-	
-	WebDriver driver;
-	
-	@FindBy(xpath = "//h4[text()='Stuffed Frog']/following-sibling::p/a")
-	private WebElement buyStuffedFrog;
-	
-	@FindBy(xpath = "//h4[text()='Fluffy Bunny']/following-sibling::p/a")
-    private WebElement buyFluffyBunny;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import java.util.List;
 
-    @FindBy(xpath = "//h4[text()='Valentine Bear']/following-sibling::p/a")
-    private WebElement buyValentineBear;
-    
-    @FindBy(css = "a[href*='#/cart']")
-    private WebElement cartMenu;
+    public class ShopPage extends BasePage{
 
 
-	
-	public ShopPage(WebDriver driver) {
-		super(driver);
-		
-			
-	}
-	
-	public void buyStuffedFrog(int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            buyStuffedFrog.click();
+        // ✅ Locators for products and Add buttons
+        @FindBy(xpath = "//h4[@class='product-title ng-binding']")
+        List<WebElement> productNames;
+
+        @FindBy(xpath = "//span[@class='product-price ng-binding']")
+        List<WebElement> productPrices;
+
+        @FindBy(xpath = "//a[text()='Buy']")
+        List<WebElement> buyButtons;
+
+        @FindBy(id = "nav-cart")
+        private WebElement cartLink;
+
+        public ShopPage(WebDriver driver) {
+            super(driver);
+        }
+
+        // ✅ Buy a given quantity of product by name
+        public void buyProduct(String productName, int quantity) {
+            for (int i = 0; i < productNames.size(); i++) {
+                if (productNames.get(i).getText().equalsIgnoreCase(productName)) {
+                    for (int j = 0; j < quantity; j++) {
+                        buyButtons.get(i).click();
+                    }
+                    break;
+                }
+            }
+        }
+
+        // ✅ Get price from Shop page
+        public double getProductPrice(String productName) {
+            for (int i = 0; i < productNames.size(); i++) {
+                if (productNames.get(i).getText().equalsIgnoreCase(productName)) {
+                    String priceText = productPrices.get(i).getText().replace("$", "").trim();
+                    return Double.parseDouble(priceText);
+                }
+            }
+            throw new RuntimeException("Product not found: " + productName);
+        }
+
+        // ✅ Navigate to Cart page
+        public CartPage goToCart() {
+            cartLink.click();
+            return new CartPage(driver);
         }
     }
 
-    public void buyFluffyBunny(int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            buyFluffyBunny.click();
-        }
-    }
 
-    public void buyValentineBear(int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            buyValentineBear.click();
-        }
-    }
 
-    public void goToCart() {
-        cartMenu.click();
-    }
-	
-}

@@ -2,7 +2,7 @@
 <suite name="Jupiter UI Suite" parallel="false">
    
   <listeners>
-	  <listener class-name="com.planittesting.cloud.jupiter.utils.Listeners"></listener>
+	  <listener class-name="com.planittesting.cloud.jupiter.utils.Listeners"/>
   </listeners> 
     <test name="Contact Cart Tests">
 		  <classes>

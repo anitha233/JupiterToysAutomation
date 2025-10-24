@@ -55,16 +55,31 @@ public class ContactTests extends BaseTest{
 	       //Verify that all validation error messages are cleared.
 	       Assert.assertEquals(contact.getErrorMessages().size(), 0,"Errors should be gone");
 	    }
-	 
+/**
+ * Test Case 2: Verify Successful Form Submission on the Contact Page.
+ * Test Steps:
+ *   Navigate from the Home page to the Contact page.
+ *   Populate all mandatory fields (Forename, Email, and Message).
+ *   Click the "Submit" button.
+ *   Validate that a successful submission message is displayed.
+ *   This test is configured to run five times to ensure consistency and 100% pass rate.
+
+ * Expected Result:
+
+ *   The contact form should submit successfully without any validation errors.
+ *   A confirmation message (e.g., "Thanks John, we appreciate your feedback.") should be visible.
+
+ */
 	    @Test(priority=2,invocationCount = 5)
 	    public void testcase2_VerifySuccessfulSubmission(){
 	            HomePage home = new HomePage(driver);
 	            ContactPage contact = home.goToContactPage();
-
+               //Populate all mandatory fields (Forename, Email, Message)
 	            contact.fillMandatoryFields("Mike", "mike@test.com", "Good day");
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Submit")));
-	            contact.clickSubmit();
-               
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Submit")));
+	            //Click on Submit Button
+                contact.clickSubmit();
+               //Validate successful submission message
 	            Assert.assertTrue(contact.isSuccessMessageDisplayed(), "Success message should appear");
 	        }
 	
