@@ -25,7 +25,7 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 echo 'Running all Selenium test cases...'
-                sh 'mvn clean test'
+                sh 'mvn clean test -Dheadless=true'
             }
         }
 

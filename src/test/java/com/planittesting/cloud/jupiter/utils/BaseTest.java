@@ -50,25 +50,20 @@ public class BaseTest {
 
     @BeforeMethod
 	public void setUp() {
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-        /*ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        ChromeOptions options = new ChromeOptions();
+        if (Boolean.parseBoolean(System.getProperty("headless", "false"))) {
+            options.addArguments("--headless=new");
+        }
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
         options.addArguments("--window-size=1920,1080");
-        WebDriver driver = new ChromeDriver(options);*/
+
+        driver = new ChromeDriver(options);
+		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		driver.get(baseUrl);
-		
-		/*
-		 * ChromeOptions options = new ChromeOptions();
-           options.addArguments("--headless");
-            options.addArguments("--disable-gpu");
-           options.addArguments("--window-size=1920,1080");
-           WebDriver driver = new ChromeDriver(options);
-
-		 */
 		
 		}
 	

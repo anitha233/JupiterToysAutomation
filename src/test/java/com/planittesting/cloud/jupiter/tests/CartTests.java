@@ -50,47 +50,38 @@ public class CartTests extends BaseTest{
 
 	@Test(priority =3)
 	public void testcase3_VerifyCartTotals() {
-	HomePage home = new HomePage(driver);
-	 home.goToShopPage();
-	 
-	 //Navigating to shop page
-	 ShopPage shop = new ShopPage(driver);
-	 
 
-     // Add products to cart
-     shop.buyProduct("Stuffed Frog",2);
-     shop.buyProduct("Fluffy Bunny",5);
-     shop.buyProduct("Valentine Bear",3);
+        // Navigate to Shop Page
+        HomePage home = new HomePage(driver);
+        ShopPage shop = home.goToShopPage();
 
-     // Go to cart
-     shop.goToCart();
-   
+        // Add products to cart
+        shop.buyProduct("Stuffed Frog", 2);
+        shop.buyProduct("Fluffy Bunny", 5);
+        shop.buyProduct("Valentine Bear", 3); // Use exact name as shown on Shop Page
 
-        CartPage cart = new CartPage(driver);
-        int frogQty = cart.getProductQuantity("Stuffed Frog");
-        System.out.println("Stuffed Frog Quantity: " + frogQty);
+        // Navigate to Cart Page
+        CartPage cart = shop.goToCart();
 
-
-        // Get product prices from Shop page
+        // Get expected prices from Shop Page
         double frogPrice = shop.getProductPrice("Stuffed Frog");
         double bunnyPrice = shop.getProductPrice("Fluffy Bunny");
         double bearPrice = shop.getProductPrice("Valentine Bear");
 
-        // Validate prices in cart
-        Assert.assertEquals(cart.getProductPrice("Stuffed Frog"), frogPrice, "Stuffed Frog price mismatch!");
-        Assert.assertEquals(cart.getProductPrice("Fluffy Bunny"), bunnyPrice, "Fluffy Bunny price mismatch!");
-        Assert.assertEquals(cart.getProductPrice("Valentine Bear"), bearPrice, "Valentine Bear price mismatch!");
+        // Verify unit prices
+        Assert.assertEquals(cart.getProductPrice("Stuffed Frog"), frogPrice, "Stuffed Frog price mismatch");
+        Assert.assertEquals(cart.getProductPrice("Fluffy Bunny"), bunnyPrice, "Fluffy Bunny price mismatch");
+        Assert.assertEquals(cart.getProductPrice("Valentine Bear"), bearPrice, "Valentine Bear price mismatch");
 
-        // Validate subtotals
-        Assert.assertEquals(cart.getProductSubtotal("Stuffed Frog"), frogPrice * 2, "Stuffed Frog subtotal mismatch!");
-        Assert.assertEquals(cart.getProductSubtotal("Fluffy Bunny"), bunnyPrice * 5, "Fluffy Bunny subtotal mismatch!");
-        Assert.assertEquals(cart.getProductSubtotal("Valentine Bear"), bearPrice * 3, "Valentine Bear subtotal mismatch!");
+        // Verify subtotal per product
+        Assert.assertEquals(cart.getProductSubtotal("Stuffed Frog"), frogPrice * 2, 0.01, "Stuffed Frog subtotal mismatch");
+        Assert.assertEquals(cart.getProductSubtotal("Fluffy Bunny"), bunnyPrice * 5, 0.01, "Fluffy Bunny subtotal mismatch");
+        Assert.assertEquals(cart.getProductSubtotal("Valentine Bear"), bearPrice * 3, 0.01, "Valentine Bear subtotal mismatch");
 
-        // Validate total
+        // Verify total
         double expectedTotal = (frogPrice * 2) + (bunnyPrice * 5) + (bearPrice * 3);
-        Assert.assertEquals(cart.getTotal(), expectedTotal, "Cart total mismatch!");
+        Assert.assertEquals(cart.getTotal(), expectedTotal, 0.01, "Total price mismatch!");
     }
-
 
  }
 

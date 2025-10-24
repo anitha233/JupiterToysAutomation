@@ -1,77 +1,81 @@
 package com.planittesting.cloud.jupiter.pages;
 
+import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
 import org.openqa.selenium.By;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-
+import java.time.Duration;
 import java.util.List;
 
-/**
- * 
- * Represents the Shope Page 
- * 
- * @author anithavalluru
- * 
- */
+public class ShopPage extends BasePage {
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import java.util.List;
+   /* @FindBy(css = "h4.product-title")
+    List<WebElement> productNames;
 
-    public class ShopPage extends BasePage{
+   @FindBy(css = "span.product-price")
+   List<WebElement> productPrices;
+
+    @FindBy(xpath = "//a[text()='Buy']")
+   List<WebElement> buyButtons;*/
+
+    @FindBy(css = ".product")
+    List<WebElement> products;
+
+    @FindBy(css = "a[href*='#/cart']")
+   WebElement cartLink;
 
 
-        // ✅ Locators for products and Add buttons
-        @FindBy(xpath = "//h4[@class='product-title ng-binding']")
-        List<WebElement> productNames;
+    public ShopPage(WebDriver driver) {
+        super(driver);
 
-        @FindBy(xpath = "//span[@class='product-price ng-binding']")
-        List<WebElement> productPrices;
 
-        @FindBy(xpath = "//a[text()='Buy']")
-        List<WebElement> buyButtons;
+    wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    // Wait until at least one product is visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(products));
+}
 
-        @FindBy(id = "nav-cart")
-        private WebElement cartLink;
-
-        public ShopPage(WebDriver driver) {
-            super(driver);
-        }
-
-        // ✅ Buy a given quantity of product by name
-        public void buyProduct(String productName, int quantity) {
-            for (int i = 0; i < productNames.size(); i++) {
-                if (productNames.get(i).getText().equalsIgnoreCase(productName)) {
-                    for (int j = 0; j < quantity; j++) {
-                        buyButtons.get(i).click();
-                    }
-                    break;
-                }
-            }
-        }
-
-        // ✅ Get price from Shop page
-        public double getProductPrice(String productName) {
-            for (int i = 0; i < productNames.size(); i++) {
-                if (productNames.get(i).getText().equalsIgnoreCase(productName)) {
-                    String priceText = productPrices.get(i).getText().replace("$", "").trim();
-                    return Double.parseDouble(priceText);
-                }
-            }
-            throw new RuntimeException("Product not found: " + productName);
-        }
-
-        // ✅ Navigate to Cart page
-        public CartPage goToCart() {
-            cartLink.click();
-            return new CartPage(driver);
+// Get price for a given product name
+public double getProductPrice(String productName) {
+    for (WebElement product : products) {
+        String name = product.findElement(By.cssSelector("h4.product-title")).getText().trim();
+        if (name.equalsIgnoreCase(productName.trim())) {
+            String priceText = product.findElement(By.cssSelector("span.product-price")).getText().replace("$", "").trim();
+            return Double.parseDouble(priceText);
         }
     }
+    //print all product names
+    System.out.println("Available products on Shop Page:");
+    for (WebElement product : products) {
+        System.out.println(" - " + product.findElement(By.cssSelector("h4.product-title")).getText());
+    }
+    throw new RuntimeException("Product not found: " + productName);
+}
 
+// Buy a product multiple times
+public void buyProduct(String productName, int quantity) {
+    for (WebElement product : products) {
+        String name = product.findElement(By.cssSelector("h4.product-title")).getText().trim();
+        if (name.equalsIgnoreCase(productName.trim())) {
+            WebElement buyButton = product.findElement(By.xpath(".//a[text()='Buy']"));
+            wait.until(ExpectedConditions.elementToBeClickable(buyButton));
+            for (int i = 0; i < quantity; i++) {
+                buyButton.click();
+            }
+            return;
+        }
+    }
+    throw new RuntimeException("Product not found: " + productName);
+}
 
+// Navigate to Cart page
+public CartPage goToCart() {
+    wait.until(ExpectedConditions.elementToBeClickable(cartLink)); // ✅ Wait until cart is clickable
+    cartLink.click();
+    return new CartPage(driver);
+}
 
+}
