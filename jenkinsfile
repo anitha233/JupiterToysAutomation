@@ -15,7 +15,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                echo 'Cloning repository...'
+                echo '🔄 Cloning repository...'
                 git branch: 'main',
                     url: 'https://github.com/anitha233/JupiterToysAutomation.git',
                     credentialsId: 'github-token'
@@ -24,25 +24,32 @@ pipeline {
 
         stage('Run Selenium Tests') {
             steps {
-                echo 'Running all Selenium test cases...'
+                echo '🧪 Running all Selenium test cases (headless)...'
                 sh 'mvn clean test -Dheadless=true'
             }
         }
 
         stage('Archive Screenshots') {
             steps {
-                echo 'Archiving screenshots from failed tests...'
+                echo '📸 Archiving screenshots from failed tests...'
                 archiveArtifacts artifacts: '**/reports/*.png', allowEmptyArchive: true
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                echo 'Generating Allure report...'
+                echo '📊 Generating Allure report...'
+
+                // Debug info to confirm results exist
+                sh 'echo "Listing allure-results contents:"'
+                sh 'ls -la target || true'
+                sh 'ls -la target/allure-results || true'
+
+                // Generate Allure Report
                 allure([
                     includeProperties: false,
                     jdk: '',
-                    results: [[path: "${ALLURE_RESULTS}"]]
+                    results: [[path: 'target/allure-results']]
                 ])
             }
         }
@@ -50,7 +57,7 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning workspace...'
+            echo '🧹 Cleaning workspace...'
             cleanWs()
         }
 
